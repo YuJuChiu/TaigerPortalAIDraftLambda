@@ -1,14 +1,12 @@
 import * as cdk from "aws-cdk-lib";
-import { Code, FunctionUrlAuthType } from "aws-cdk-lib/aws-lambda";
+import { Code } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 
 import { Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import path from "path";
 import {
-    AccountRootPrincipal,
     ArnPrincipal,
     CompositePrincipal,
-    Effect,
     PolicyStatement,
     Role,
     ServicePrincipal
@@ -19,6 +17,7 @@ import {
     MethodOptions,
     RestApi
 } from "aws-cdk-lib/aws-apigateway";
+import { AWS_ACCOUNT } from "../configuration";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
@@ -58,7 +57,7 @@ export class LambdaStack extends cdk.Stack {
         const clientRole = new Role(this, "AuthorizedClientRole", {
             assumedBy: new CompositePrincipal(
                 new ServicePrincipal("ec2.amazonaws.com"),
-                new ArnPrincipal("arn:aws:iam::${AWS_ACCOUNT}:role/ec2_taiger_test_infra")
+                new ArnPrincipal(`arn:aws:iam::${AWS_ACCOUNT}:role/ec2_taiger_test_infra`)
                 // new ArnPrincipal("arn:aws:iam::${AWS_ACCOUNT}:user/specific-iam-user"),
             ),
             description: "Role for authorized clients to access the API"
