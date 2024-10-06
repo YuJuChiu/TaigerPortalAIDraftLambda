@@ -5,6 +5,12 @@ import { Construct } from "constructs";
 import { Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import path from "path";
 import { Effect, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
+import {
+    AuthorizationType,
+    LambdaIntegration,
+    MethodOptions,
+    RestApi
+} from "aws-cdk-lib/aws-apigateway";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
@@ -24,17 +30,24 @@ export class LambdaStack extends cdk.Stack {
             authType: FunctionUrlAuthType.AWS_IAM
         });
 
-        // Reference the existing EC2 instance role (replace 'your-ec2-role-name' with the actual role name)
-        const ec2InstanceRole = Role.fromRoleName(this, "EC2InstanceRole", "ec2_taiger_test_infra");
+        // Create API Gateway
+        const api = new RestApi(this, "MyApi", {
+            restApiName: "MyService",
+            description: "This service handles requests with Lambda."
+        });
 
-        // Add an IAM policy that allows the EC2 role to invoke the Lambda function URL
-        lambdaFunction.addToRolePolicy(
-            new PolicyStatement({
-                effect: Effect.ALLOW,
-                actions: ["lambda:InvokeFunctionUrl"],
-                resources: [lambdaFunction.functionArn],
-                principals: [ec2InstanceRole]
-            })
-        );
+        // Lambda integration
+        const lambdaIntegration = new LambdaIntegration(lambdaFunction, {
+            proxy: true // Proxy all requests to the Lambda
+        });
+
+        // Define IAM authorization for the API Gateway method
+        const methodOptions: MethodOptions = {
+            authorizationType: AuthorizationType.IAM // Require SigV4 signed requests
+        };
+
+        // Create a resource and method in API Gateway
+        const lambdaResource = api.root.addResource("analyze");
+        lambdaResource.addMethod("GET", lambdaIntegration, methodOptions);
     }
 }
