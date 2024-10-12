@@ -27,15 +27,19 @@ export class LambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props);
 
-        const lambdaFunction = new Function(this, "TaiGerPortalTranscriptAnalyzerLambdaFunction", {
-            runtime: Runtime.PYTHON_3_9,
-            code: Code.fromAsset(path.join(__dirname, "..", "lambda")), // Use the zip artifact from CodeBuild
-            handler: "lambda_function.lambda_handler"
-        });
+        const lambdaFunction = new Function(
+            this,
+            `TaiGerPortalTranscriptAnalyzerLambdaFunction-${props.stageName}`,
+            {
+                runtime: Runtime.PYTHON_3_9,
+                code: Code.fromAsset(path.join(__dirname, "..", "lambda")), // Use the zip artifact from CodeBuild
+                handler: "lambda_function.lambda_handler"
+            }
+        );
 
         // Create API Gateway
-        const api = new RestApi(this, "TranscriptAnalyzerAPIG", {
-            restApiName: "TranscriptAnalyzer",
+        const api = new RestApi(this, `TranscriptAnalyzerAPIG-${props.stageName}`, {
+            restApiName: `TranscriptAnalyzerAPIG-${props.stageName}`,
             description: "This service handles requests with Lambda."
         });
 
@@ -54,7 +58,7 @@ export class LambdaStack extends cdk.Stack {
         lambdaResource.addMethod("GET", lambdaIntegration, methodOptions);
 
         // Create an IAM role for the authorized client
-        const clientRole = new Role(this, "AuthorizedClientRole", {
+        const clientRole = new Role(this, `AuthorizedClientRole-${props.stageName}`, {
             assumedBy: new CompositePrincipal(
                 new ServicePrincipal("ec2.amazonaws.com"),
                 new ArnPrincipal(`arn:aws:iam::${AWS_ACCOUNT}:role/ec2_taiger_test_infra`),
