@@ -33,7 +33,7 @@ export class LambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props);
 
-        const API_ENDPOINT = `api.${DOMAIN_NAME}`;
+        const API_ENDPOINT = `${props.domainStage}.${DOMAIN_NAME}`;
 
         const lambdaFunction = new Function(
             this,
