@@ -16,6 +16,7 @@ import { PipelineAppStage } from "./app-stage";
 import { STAGES } from "../constants";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Artifact } from "aws-cdk-lib/aws-codepipeline";
+import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 export class PipelineStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -31,50 +32,27 @@ export class PipelineStack extends cdk.Stack {
             }
         );
 
-        // // Building Lambda
-        // const lambdaBuildStep = new CodeBuildStep("BuildLambda", {
-        //     buildEnvironment: {
-        //         buildImage: codebuild.LinuxBuildImage.STANDARD_5_0
-        //     },
-        //     input: source,
-        //     installCommands: [
-        //         "pip install -r requirements.txt -t ." // Install dependencies
-        //     ],
-        //     commands: [
-        //         "mkdir -p output", // Create an output directory
-        //         "zip -r output/lambda_function.zip lambda" // Zip the Lambda code and dependencies
-        //     ],
-        //     partialBuildSpec: codebuild.BuildSpec.fromObject({
-        //         phases: {
-        //             install: {
-        //                 "runtime-versions": {
-        //                     python: "3.9"
-        //                 },
-        //                 commands: ["python --version"]
-        //             }
-        //         }
-        //     }),
-        //     primaryOutputDirectory: "output" // Output is the current directory
-        // });
-
         // Create the high-level CodePipeline
         const pipeline = new CodePipeline(this, "Pipeline", {
             pipelineName: "TaiGerPortalTranscriptAnalyzerPipeline",
             synth: new ShellStep("Synth", {
                 input: source,
                 commands: ["npm ci", "npm run build", "npx cdk synth"]
-            })
+            }),
+            // role: adminRole,
+            codeBuildDefaults: {
+                rolePolicy: [
+                    new PolicyStatement({
+                        actions: [
+                            "route53:ListHostedZonesByName",
+                            "route53:GetHostedZone",
+                            "route53:ListHostedZones"
+                        ],
+                        resources: ["*"]
+                    })
+                ]
+            }
         });
-
-        // // Add a step to build the Python handler
-        // const buildPython = new CodeBuildStep("BuildPython", {
-        //     input: python_source,
-        //     buildEnvironment: {
-        //         buildImage: codebuild.LinuxBuildImage.STANDARD_5_0
-        //     },
-        //     commands: ["pip install -r requirements.txt", "zip -r lambda_function.zip package"],
-        //     primaryOutputDirectory: "package"
-        // });
 
         STAGES.forEach(({ stageName, env, domainStage }) => {
             const stage = new PipelineAppStage(
