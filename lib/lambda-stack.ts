@@ -52,7 +52,7 @@ export class LambdaStack extends cdk.Stack {
 
         // Step 2: Create or use an existing ACM certificate in the same region
         const certificate = new Certificate(this, "ApiGatewayCertificate", {
-            domainName: "api.example.com", // Replace with your subdomain
+            domainName: API_ENDPOINT, // Replace with your subdomain
             validation: CertificateValidation.fromDns(hostedZone)
         });
 
