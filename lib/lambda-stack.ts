@@ -13,19 +13,27 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import {
     AuthorizationType,
+    BasePathMapping,
+    DomainName,
+    EndpointType,
     LambdaIntegration,
     MethodOptions,
     RestApi
 } from "aws-cdk-lib/aws-apigateway";
-import { AWS_ACCOUNT } from "../configuration";
+import { APP_NAME, AWS_ACCOUNT, DOMAIN_NAME } from "../configuration";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
+import { Certificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
+    domainStage: string;
 }
 
 export class LambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props);
+
+        const API_ENDPOINT = `api.courses.${props.domainStage}.${DOMAIN_NAME}`;
 
         const lambdaFunction = new Function(
             this,
@@ -37,10 +45,36 @@ export class LambdaStack extends cdk.Stack {
             }
         );
 
+        // Step 1: Lookup an existing Route 53 hosted zone (for your domain)
+        const hostedZone = HostedZone.fromLookup(this, "TaiGerHostedZone", {
+            domainName: DOMAIN_NAME // Replace with your domain name
+        });
+
+        // Step 2: Create or use an existing ACM certificate in the same region
+        const certificate = new Certificate(this, "ApiGatewayCertificate", {
+            domainName: "api.example.com", // Replace with your subdomain
+            validation: CertificateValidation.fromDns(hostedZone)
+        });
+
         // Create API Gateway
-        const api = new RestApi(this, `TranscriptAnalyzerAPIG-${props.stageName}`, {
-            restApiName: `TranscriptAnalyzerAPIG-${props.stageName}`,
-            description: "This service handles requests with Lambda."
+        const api = new RestApi(this, `${APP_NAME}-APIG-${props.stageName}`, {
+            restApiName: `${APP_NAME}-${props.stageName}`,
+            description: "This service handles requests with Lambda.",
+            deployOptions: {
+                stageName: "prod" // Your API stage
+            }
+        });
+
+        // Step 4: Map the custom domain name to the API Gateway
+        const domainName = new DomainName(this, `${APP_NAME}-CustomDomainName-${props.stageName}`, {
+            domainName: API_ENDPOINT, // Your custom domain
+            certificate: certificate,
+            endpointType: EndpointType.REGIONAL // Or REGIONAL for a regional API
+        });
+
+        new BasePathMapping(this, `${APP_NAME}-BaseMapping-${props.stageName}`, {
+            domainName: domainName,
+            restApi: api
         });
 
         // Lambda integration

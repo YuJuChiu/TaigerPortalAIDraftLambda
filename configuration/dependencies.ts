@@ -7,3 +7,5 @@ export const GITHUB_OWNER = "LIYUNG";
 export const GITHUB_PACKAGE_BRANCH = "main";
 
 export const AWS_ACCOUNT = "669131042313";
+export const DOMAIN_NAME = "taigerconsultancy-portal.com";
+export const APP_NAME = "TranscriptAnalyzer";

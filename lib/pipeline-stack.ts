@@ -76,13 +76,14 @@ export class PipelineStack extends cdk.Stack {
         //     primaryOutputDirectory: "package"
         // });
 
-        STAGES.forEach(({ stageName, env }) => {
+        STAGES.forEach(({ stageName, env, domainStage }) => {
             const stage = new PipelineAppStage(
                 this,
                 `${stageName}-TaiGerPortalTranscriptAnalyzerLambda`,
                 {
                     env,
-                    stageName
+                    stageName,
+                    domainStage
                 }
             );
             pipeline.addStage(stage);
