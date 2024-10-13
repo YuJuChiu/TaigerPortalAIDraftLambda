@@ -33,7 +33,7 @@ export class LambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props);
 
-        const API_ENDPOINT = `api.courses.${props.domainStage}.${DOMAIN_NAME}`;
+        const API_ENDPOINT = `api.${DOMAIN_NAME}`;
 
         const lambdaFunction = new Function(
             this,
@@ -45,12 +45,7 @@ export class LambdaStack extends cdk.Stack {
             }
         );
 
-        // Step 1: Lookup an existing Route 53 hosted zone (for your domain)
-        const hostedZone = HostedZone.fromLookup(this, "TaiGerHostedZone", {
-            domainName: DOMAIN_NAME // Replace with your domain name
-        });
-
-        // Step 2: Create or use an existing ACM certificate in the same region
+        // Step 1: Create or use an existing ACM certificate in the same region
         // Define the ACM certificate
         // domain name of ACM: *.taigerconsultancy-portal.com
         const certificate = Certificate.fromCertificateArn(
@@ -59,7 +54,7 @@ export class LambdaStack extends cdk.Stack {
             "arn:aws:acm:us-east-1:669131042313:certificate/44845b4a-61c2-4b9c-8d80-755890a1838e"
         );
 
-        // Create API Gateway
+        // Step 2: Create API Gateway
         const api = new RestApi(this, `${APP_NAME}-APIG-${props.stageName}`, {
             restApiName: `${APP_NAME}-${props.stageName}`,
             description: "This service handles requests with Lambda.",
@@ -68,7 +63,7 @@ export class LambdaStack extends cdk.Stack {
             }
         });
 
-        // Step 4: Map the custom domain name to the API Gateway
+        // Step 3: Map the custom domain name to the API Gateway
         const domainName = new DomainName(this, `${APP_NAME}-CustomDomainName-${props.stageName}`, {
             domainName: API_ENDPOINT, // Your custom domain
             certificate: certificate,
