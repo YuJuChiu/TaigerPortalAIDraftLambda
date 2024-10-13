@@ -21,8 +21,9 @@ import {
     RestApi
 } from "aws-cdk-lib/aws-apigateway";
 import { APP_NAME, AWS_ACCOUNT, DOMAIN_NAME } from "../configuration";
-import { HostedZone } from "aws-cdk-lib/aws-route53";
+import { ARecord, HostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { Certificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
+import { ApiGatewayDomain } from "aws-cdk-lib/aws-route53-targets";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
@@ -80,6 +81,13 @@ export class LambdaStack extends cdk.Stack {
             restApi: api
         });
 
+        // Add this new section to create an A record for your subdomain
+        new ARecord(this, `${APP_NAME}-AliasRecord-${props.stageName}`, {
+            zone: hostedZone,
+            recordName: API_ENDPOINT, // This will create a record for your subdomain
+            target: RecordTarget.fromAlias(new ApiGatewayDomain(domainName))
+        });
+
         // Lambda integration
         const lambdaIntegration = new LambdaIntegration(lambdaFunction, {
             proxy: true // Proxy all requests to the Lambda
@@ -112,17 +120,5 @@ export class LambdaStack extends cdk.Stack {
                 resources: [api.arnForExecuteApi()]
             })
         );
-
-        // // Output the role ARN for reference
-        // new cdk.CfnOutput(this, "AuthorizedClientRoleArn", {
-        //     value: clientRole.roleArn,
-        //     description: "ARN of the IAM role for authorized clients"
-        // });
-
-        // // Output the API URL
-        // new cdk.CfnOutput(this, "ApiUrl", {
-        //     value: api.url,
-        //     description: "URL of the API Gateway"
-        // });
     }
 }
