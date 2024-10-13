@@ -48,11 +48,16 @@ export class LambdaStack extends cdk.Stack {
         // Step 1: Create or use an existing ACM certificate in the same region
         // Define the ACM certificate
         // domain name of ACM: *.taigerconsultancy-portal.com
-        const certificate = Certificate.fromCertificateArn(
-            this,
-            "Certificate",
-            "arn:aws:acm:us-east-1:669131042313:certificate/44845b4a-61c2-4b9c-8d80-755890a1838e"
-        );
+        // Define the hosted zone for your domain (example.com)
+        const hostedZone = HostedZone.fromLookup(this, `TaiGerHostedZone-${props.stageName}`, {
+            domainName: DOMAIN_NAME
+        });
+
+        // Create an ACM certificate
+        const certificate = new Certificate(this, `TaiGerCertificate-${props.stageName}`, {
+            domainName: API_ENDPOINT, // Replace with your domain
+            validation: CertificateValidation.fromDns(hostedZone) // Validate via DNS
+        });
 
         // Step 2: Create API Gateway
         const api = new RestApi(this, `${APP_NAME}-APIG-${props.stageName}`, {
