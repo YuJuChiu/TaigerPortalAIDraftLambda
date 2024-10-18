@@ -41,7 +41,16 @@ export class LambdaStack extends cdk.Stack {
             `TaiGerPortalTranscriptAnalyzerLambdaFunction-${props.stageName}`,
             {
                 runtime: Runtime.PYTHON_3_9,
-                code: Code.fromAsset(path.join(__dirname, "..", "lambda")), // Use the zip artifact from CodeBuild
+                code: Code.fromAsset(path.join(__dirname, "..", "lambda"), {
+                    bundling: {
+                        image: Runtime.PYTHON_3_9.bundlingImage,
+                        command: [
+                            "bash",
+                            "-c",
+                            "pip install -r requirements.txt -t /asset-output && cp -au . /asset-output"
+                        ]
+                    }
+                }), // Use the zip artifact from CodeBuild
                 handler: "lambda_function.lambda_handler"
             }
         );
