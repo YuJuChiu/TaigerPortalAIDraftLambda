@@ -53,14 +53,15 @@ export class PipelineStack extends cdk.Stack {
             }
         });
 
-        STAGES.forEach(({ stageName, env, domainStage }) => {
+        STAGES.forEach(({ stageName, env, domainStage, isProd }) => {
             const stage = new PipelineAppStage(
                 this,
                 `${stageName}-TaiGerPortalTranscriptAnalyzerLambda`,
                 {
                     env,
                     stageName,
-                    domainStage
+                    domainStage,
+                    isProd
                 }
             );
             pipeline.addStage(stage);

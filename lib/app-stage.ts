@@ -5,6 +5,7 @@ import { Stage, StageProps } from "aws-cdk-lib";
 interface DeploymentkProps extends StageProps {
     stageName: string;
     domainStage: string;
+    isProd: boolean;
 }
 
 export class PipelineAppStage extends Stage {
@@ -13,7 +14,8 @@ export class PipelineAppStage extends Stage {
 
         const lambdaStack = new LambdaStack(this, "LambdaStack", {
             stageName: props.stageName,
-            domainStage: props.domainStage
+            domainStage: props.domainStage,
+            isProd: props.isProd
         });
     }
 }
