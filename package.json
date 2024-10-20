@@ -1,8 +1,8 @@
 {
-    "name": "tai_ger_portal_transcript_analyzer_lambda_cdk",
+    "name": "tai_ger_portal_lambda_cdk",
     "version": "0.1.0",
     "bin": {
-        "tai_ger_portal_transcript_analyzer_lambda_cdk": "bin/tai_ger_portal_transcript_analyzer_lambda_cdk.js"
+        "tai_ger_portal_lambda_cdk": "bin/tai_ger_portal_lambda_cdk.js"
     },
     "scripts": {
         "clean": "rm -rf build dist cdk.out node_modules",
