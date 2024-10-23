@@ -3,7 +3,38 @@ from db import get_keywords_collection
 from main import analyze_transcript
 
 
-def lambda_hello_world(event, context):
+def lambda_function(event, context):
+    path = event.get('path')
+    method = event.get('httpMethod')
+
+    if path == '/analyze':
+        if method == 'POST':
+            return post_analyze_courses(event)
+        elif method == "GET":
+            return get_keywords(event)
+
+        else:
+            return {
+                'statusCode': 405,
+                'body': json.dumps('Method Not Allowed')
+            }
+    elif path == '/hello':
+        if method == 'GET':
+            return lambda_hello_world(event)
+        else:
+            return {
+                'statusCode': 405,
+                'body': json.dumps('Method Not Allowed')
+            }
+    # Additional routes...
+    else:
+        return {
+            'statusCode': 404,
+            'body': json.dumps('Not Found')
+        }
+
+
+def lambda_hello_world(event):
     # This function is triggered by an event and returns a response.
     message = "Hello, world!"
 
@@ -16,7 +47,7 @@ def lambda_hello_world(event, context):
     }
 
 
-def getKeywords(event, context):
+def get_keywords(event):
     keywords = get_keywords_collection()
     print(keywords)
 
@@ -26,7 +57,7 @@ def getKeywords(event, context):
     }
 
 
-def postAnalyzeCourses(event, context):
+def post_analyze_courses(event):
     # Get the body from the event
     body = event.get('body')
 

@@ -63,9 +63,9 @@ export class LambdaStack extends cdk.Stack {
             props.fileS3BucketName
         );
 
-        const lambdaFunctionHello = new Function(
+        const lambdaFunction = new Function(
             this,
-            `${TENANT_NAME}-HelloWorld-Function-${props.stageName}`,
+            `${TENANT_NAME}-TranscriptAnalyzer-Function-${props.stageName}`,
             {
                 runtime: Runtime.PYTHON_3_9,
                 code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
@@ -78,54 +78,8 @@ export class LambdaStack extends cdk.Stack {
                         ]
                     }
                 }), // Use the zip artifact from CodeBuild
-                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
-                handler: "lambda_function.lambda_hello_world"
-            }
-        );
-
-        const lambdaFunctionGet = new Function(
-            this,
-            `${TENANT_NAME}Portal-GetKeywordLambda-${props.stageName}`,
-            {
-                runtime: Runtime.PYTHON_3_9,
-                code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
-                    bundling: {
-                        image: Runtime.PYTHON_3_9.bundlingImage,
-                        command: [
-                            "bash",
-                            "-c",
-                            "pip install -r requirements.txt -t /asset-output && cp -r . /asset-output"
-                        ]
-                    }
-                }), // Use the zip artifact from CodeBuild
-                handler: "lambda_function.getKeywords",
-                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
-                environment: {
-                    MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
-                    MONGODB_NAME: props.mongoDBName,
-                    REGION: props.env.region,
-                    AWS_S3_BUCKET_NAME: bucket.bucketName // Pass the bucket name to the Lambda
-                }
-            }
-        );
-
-        const lambdaFunctionPost = new Function(
-            this,
-            `${TENANT_NAME}PortalTranscriptAnalyzer-${props.stageName}`,
-            {
-                runtime: Runtime.PYTHON_3_9,
-                code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
-                    bundling: {
-                        image: Runtime.PYTHON_3_9.bundlingImage,
-                        command: [
-                            "bash",
-                            "-c",
-                            "pip install -r requirements.txt -t /asset-output && cp -r . /asset-output"
-                        ]
-                    }
-                }), // Use the zip artifact from CodeBuild
-                handler: "lambda_function.postAnalyzeCourses",
-                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
+                handler: "lambda_function.lambda_function",
+                timeout: cdk.Duration.seconds(60), // Set timeout here (up to 60 seconds)
                 // Adding environment variable for the S3 bucket name
                 environment: {
                     MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
@@ -137,10 +91,9 @@ export class LambdaStack extends cdk.Stack {
         );
 
         // Grant Lambda permission to read the secret
-        secret.grantRead(lambdaFunctionGet);
-        secret.grantRead(lambdaFunctionPost);
+        secret.grantRead(lambdaFunction);
         // Grant permission for the Lambda function to upload to the S3 bucket
-        bucket.grantPut(lambdaFunctionPost);
+        bucket.grantPut(lambdaFunction);
 
         // Step 1: Create or use an existing ACM certificate in the same region
         // Define the ACM certificate
@@ -197,13 +150,7 @@ export class LambdaStack extends cdk.Stack {
         });
 
         // Lambda integration
-        const lambdaIntegrationHello = new LambdaIntegration(lambdaFunctionHello, {
-            proxy: true // Proxy all requests to the Lambda
-        });
-        const lambdaIntegrationGet = new LambdaIntegration(lambdaFunctionGet, {
-            proxy: true // Proxy all requests to the Lambda
-        });
-        const lambdaIntegrationPost = new LambdaIntegration(lambdaFunctionPost, {
+        const lambdaIntegration = new LambdaIntegration(lambdaFunction, {
             proxy: true // Proxy all requests to the Lambda
         });
 
@@ -214,12 +161,12 @@ export class LambdaStack extends cdk.Stack {
 
         // Create a resource and method in API Gateway
         const lambdaHelloWorld = api.root.addResource("hello");
-        lambdaHelloWorld.addMethod("GET", lambdaIntegrationHello, methodOptions);
+        lambdaHelloWorld.addMethod("GET", lambdaIntegration, methodOptions);
 
         const lambdaResource = api.root.addResource("analyze");
-        lambdaResource.addMethod("GET", lambdaIntegrationGet, methodOptions);
+        lambdaResource.addMethod("GET", lambdaIntegration, methodOptions);
         // Add POST method for the POST Lambda
-        lambdaResource.addMethod("POST", lambdaIntegrationPost, methodOptions);
+        lambdaResource.addMethod("POST", lambdaIntegration, methodOptions);
 
         // Create an IAM role for the authorized client
         let assumedBy: CompositePrincipal;

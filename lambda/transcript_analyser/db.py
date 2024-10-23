@@ -77,7 +77,7 @@ def get_keywords_collection():
     database = get_database()
 
     # Use the database connection to perform operations
-    collection = database['testkeywords']
+    collection = database['keywordsets']
 
     # Example: Fetch all documents from the collection
     documents = list(collection.find({}))
