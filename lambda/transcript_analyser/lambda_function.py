@@ -43,8 +43,12 @@ def postAnalyzeCourses(event, context):
     # Now you can work with the request body
     print("Request body:", body)
 
-    analyze_transcript(body.courses, body.category, body.student_id,
-                       body.student_name, body.language, body.courses_taiger_guided)
+    analyze_transcript(body['courses'],
+                       body['category'],
+                       body['student_id'],
+                       body['student_name'],
+                       body['language'],
+                       body['courses_taiger_guided'])
 
     return {
         'statusCode': 200,
