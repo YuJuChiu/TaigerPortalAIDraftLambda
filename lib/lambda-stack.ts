@@ -78,6 +78,7 @@ export class LambdaStack extends cdk.Stack {
                         ]
                     }
                 }), // Use the zip artifact from CodeBuild
+                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
                 handler: "lambda_function.lambda_hello_world"
             }
         );
@@ -98,6 +99,7 @@ export class LambdaStack extends cdk.Stack {
                     }
                 }), // Use the zip artifact from CodeBuild
                 handler: "lambda_function.getKeywords",
+                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
                 environment: {
                     MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
                     MONGODB_NAME: props.mongoDBName,
@@ -123,6 +125,7 @@ export class LambdaStack extends cdk.Stack {
                     }
                 }), // Use the zip artifact from CodeBuild
                 handler: "lambda_function.postAnalyzeCourses",
+                timeout: cdk.Duration.seconds(20), // Set timeout here (up to 900 seconds)
                 // Adding environment variable for the S3 bucket name
                 environment: {
                     MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
