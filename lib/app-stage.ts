@@ -7,17 +7,22 @@ interface DeploymentkProps extends StageProps {
     domainStage: string;
     isProd: boolean;
     mongodbUriSecretName: string;
+    mongoDBName: string;
+    fileS3BucketName: string;
 }
 
 export class PipelineAppStage extends Stage {
     constructor(scope: Construct, id: string, props: DeploymentkProps) {
         super(scope, id, props);
 
-        const lambdaStack = new LambdaStack(this, "LambdaStack", {
+        const lambdaStack = new LambdaStack(this, `LambdaStack-${props.stageName}`, {
+            env: props.env,
             stageName: props.stageName,
             domainStage: props.domainStage,
             isProd: props.isProd,
-            mongodbUriSecretName: props.mongodbUriSecretName
+            mongodbUriSecretName: props.mongodbUriSecretName,
+            mongoDBName: props.mongoDBName,
+            fileS3BucketName: props.fileS3BucketName
         });
     }
 }

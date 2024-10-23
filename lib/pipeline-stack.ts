@@ -53,19 +53,31 @@ export class PipelineStack extends cdk.Stack {
             }
         });
 
-        STAGES.forEach(({ stageName, env, domainStage, isProd, mongodbUriSecretName }) => {
-            const stage = new PipelineAppStage(
-                this,
-                `${stageName}-TaiGerPortalTranscriptAnalyzerLambda`,
-                {
-                    env,
-                    stageName,
-                    domainStage,
-                    isProd,
-                    mongodbUriSecretName
-                }
-            );
-            pipeline.addStage(stage);
-        });
+        STAGES.forEach(
+            ({
+                stageName,
+                env,
+                domainStage,
+                isProd,
+                mongodbUriSecretName,
+                mongoDBName,
+                fileS3BucketName
+            }) => {
+                const stage = new PipelineAppStage(
+                    this,
+                    `${stageName}-TaiGerPortalTranscriptAnalyzerLambda`,
+                    {
+                        env,
+                        stageName,
+                        domainStage,
+                        isProd,
+                        mongodbUriSecretName,
+                        mongoDBName,
+                        fileS3BucketName
+                    }
+                );
+                pipeline.addStage(stage);
+            }
+        );
     }
 }

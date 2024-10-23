@@ -30,17 +30,24 @@ import { ARecord, HostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { Certificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
 import { ApiGatewayDomain } from "aws-cdk-lib/aws-route53-targets";
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
     domainStage: string;
     isProd: boolean;
     mongodbUriSecretName: string;
+    mongoDBName: string;
+    fileS3BucketName: string;
 }
 
 export class LambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props);
+
+        if (!props.env?.region) {
+            throw new Error("Region is required");
+        }
 
         const API_ENDPOINT = `${props.domainStage}.${DOMAIN_NAME}`;
 
@@ -50,9 +57,15 @@ export class LambdaStack extends cdk.Stack {
             props.mongodbUriSecretName
         );
 
-        const lambdaFunction = new Function(
+        const bucket = Bucket.fromBucketName(
             this,
-            `${TENANT_NAME}PortalTranscriptAnalyzerLambdaFunction-${props.stageName}`,
+            `taiger-file-${props.stageName}`,
+            props.fileS3BucketName
+        );
+
+        const lambdaFunctionHello = new Function(
+            this,
+            `${TENANT_NAME}-HelloWorld-Function-${props.stageName}`,
             {
                 runtime: Runtime.PYTHON_3_9,
                 code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
@@ -65,12 +78,66 @@ export class LambdaStack extends cdk.Stack {
                         ]
                     }
                 }), // Use the zip artifact from CodeBuild
-                handler: "lambda_function.lambda_handler"
+                handler: "lambda_function.lambda_hello_world"
+            }
+        );
+
+        const lambdaFunctionGet = new Function(
+            this,
+            `${TENANT_NAME}Portal-GetKeywordLambda-${props.stageName}`,
+            {
+                runtime: Runtime.PYTHON_3_9,
+                code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
+                    bundling: {
+                        image: Runtime.PYTHON_3_9.bundlingImage,
+                        command: [
+                            "bash",
+                            "-c",
+                            "pip install -r requirements.txt -t /asset-output && cp -r . /asset-output"
+                        ]
+                    }
+                }), // Use the zip artifact from CodeBuild
+                handler: "lambda_function.getKeywords",
+                environment: {
+                    MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
+                    MONGODB_NAME: props.mongoDBName,
+                    REGION: props.env.region,
+                    AWS_S3_BUCKET_NAME: bucket.bucketName // Pass the bucket name to the Lambda
+                }
+            }
+        );
+
+        const lambdaFunctionPost = new Function(
+            this,
+            `${TENANT_NAME}PortalTranscriptAnalyzer-${props.stageName}`,
+            {
+                runtime: Runtime.PYTHON_3_9,
+                code: Code.fromAsset(path.join(__dirname, "..", "lambda", "transcript_analyser"), {
+                    bundling: {
+                        image: Runtime.PYTHON_3_9.bundlingImage,
+                        command: [
+                            "bash",
+                            "-c",
+                            "pip install -r requirements.txt -t /asset-output && cp -r . /asset-output"
+                        ]
+                    }
+                }), // Use the zip artifact from CodeBuild
+                handler: "lambda_function.postAnalyzeCourses",
+                // Adding environment variable for the S3 bucket name
+                environment: {
+                    MONGODB_URI_SECRET_NAME: props.mongodbUriSecretName,
+                    MONGODB_NAME: props.mongoDBName,
+                    REGION: props.env.region,
+                    AWS_S3_BUCKET_NAME: bucket.bucketName // Pass the bucket name to the Lambda
+                }
             }
         );
 
         // Grant Lambda permission to read the secret
-        secret.grantRead(lambdaFunction);
+        secret.grantRead(lambdaFunctionGet);
+        secret.grantRead(lambdaFunctionPost);
+        // Grant permission for the Lambda function to upload to the S3 bucket
+        bucket.grantPut(lambdaFunctionPost);
 
         // Step 1: Create or use an existing ACM certificate in the same region
         // Define the ACM certificate
@@ -127,7 +194,13 @@ export class LambdaStack extends cdk.Stack {
         });
 
         // Lambda integration
-        const lambdaIntegration = new LambdaIntegration(lambdaFunction, {
+        const lambdaIntegrationHello = new LambdaIntegration(lambdaFunctionHello, {
+            proxy: true // Proxy all requests to the Lambda
+        });
+        const lambdaIntegrationGet = new LambdaIntegration(lambdaFunctionGet, {
+            proxy: true // Proxy all requests to the Lambda
+        });
+        const lambdaIntegrationPost = new LambdaIntegration(lambdaFunctionPost, {
             proxy: true // Proxy all requests to the Lambda
         });
 
@@ -137,8 +210,13 @@ export class LambdaStack extends cdk.Stack {
         };
 
         // Create a resource and method in API Gateway
+        const lambdaHelloWorld = api.root.addResource("hello");
+        lambdaHelloWorld.addMethod("GET", lambdaIntegrationHello, methodOptions);
+
         const lambdaResource = api.root.addResource("analyze");
-        lambdaResource.addMethod("GET", lambdaIntegration, methodOptions);
+        lambdaResource.addMethod("GET", lambdaIntegrationGet, methodOptions);
+        // Add POST method for the POST Lambda
+        lambdaResource.addMethod("POST", lambdaIntegrationPost, methodOptions);
 
         // Create an IAM role for the authorized client
         let assumedBy: CompositePrincipal;
