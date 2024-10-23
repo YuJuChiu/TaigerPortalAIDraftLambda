@@ -29,11 +29,13 @@ import {
 import { ARecord, HostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { Certificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
 import { ApiGatewayDomain } from "aws-cdk-lib/aws-route53-targets";
+import { Secret } from "aws-cdk-lib/aws-secretsmanager";
 
 interface LambdaStackProps extends cdk.StackProps {
     stageName: string;
     domainStage: string;
     isProd: boolean;
+    mongodbUriSecretName: string;
 }
 
 export class LambdaStack extends cdk.Stack {
@@ -41,6 +43,12 @@ export class LambdaStack extends cdk.Stack {
         super(scope, id, props);
 
         const API_ENDPOINT = `${props.domainStage}.${DOMAIN_NAME}`;
+
+        const secret = Secret.fromSecretNameV2(
+            this,
+            `mongodb-uri-${props.stageName}`,
+            props.mongodbUriSecretName
+        );
 
         const lambdaFunction = new Function(
             this,
@@ -60,6 +68,9 @@ export class LambdaStack extends cdk.Stack {
                 handler: "lambda_function.lambda_handler"
             }
         );
+
+        // Grant Lambda permission to read the secret
+        secret.grantRead(lambdaFunction);
 
         // Step 1: Create or use an existing ACM certificate in the same region
         // Define the ACM certificate

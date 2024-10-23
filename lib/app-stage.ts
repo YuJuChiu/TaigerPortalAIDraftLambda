@@ -6,6 +6,7 @@ interface DeploymentkProps extends StageProps {
     stageName: string;
     domainStage: string;
     isProd: boolean;
+    mongodbUriSecretName: string;
 }
 
 export class PipelineAppStage extends Stage {
@@ -15,7 +16,8 @@ export class PipelineAppStage extends Stage {
         const lambdaStack = new LambdaStack(this, "LambdaStack", {
             stageName: props.stageName,
             domainStage: props.domainStage,
-            isProd: props.isProd
+            isProd: props.isProd,
+            mongodbUriSecretName: props.mongodbUriSecretName
         });
     }
 }

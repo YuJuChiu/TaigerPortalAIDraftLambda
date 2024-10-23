@@ -16,12 +16,14 @@ export const STAGES = [
         stageName: Stage.Beta_FE,
         env: { region: Region.IAD, account: AWS_ACCOUNT },
         isProd: false,
-        domainStage: DomainStage.Beta
+        domainStage: DomainStage.Beta,
+        mongodbUriSecretName: "beta/taigerportal/mongodb"
     },
     {
         stageName: Stage.Prod_NA,
         env: { region: Region.NRT, account: AWS_ACCOUNT },
         isProd: true,
-        domainStage: DomainStage.Prod
+        domainStage: DomainStage.Prod,
+        mongodbUriSecretName: "prod/taigerportal/mongodb"
     }
 ];
