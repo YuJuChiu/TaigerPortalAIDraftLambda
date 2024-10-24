@@ -10,6 +10,7 @@ def lambda_function(event, context):
     if path == '/analyze':
         if method == 'POST':
             return post_analyze_courses(event)
+
         elif method == "GET":
             return get_keywords(event)
 

@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from CourseSuggestionAlgorithms import *
 from cell_formatter import red_out_failed_subject, red_out_insufficient_credit
@@ -478,16 +479,23 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
         data = output.getvalue()
 
     AWS_S3_BUCKET_NAME = os.environ.get("AWS_S3_BUCKET_NAME")
-
+    print(AWS_S3_BUCKET_NAME)
     try:
         s3 = boto3.resource('s3')
         transcript_path = studentId + '/analysed_transcript_' + student_name + '.xlsx'
-        s3.Bucket(AWS_S3_BUCKET_NAME).put_object(Key=transcript_path, Body=data)
-        # Your logic
+        print(transcript_path)
+        s3.Bucket(AWS_S3_BUCKET_NAME).put_object(
+            Key=transcript_path, Body=data)
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'data': transcript_path})
+        }
     except Exception as e:
         print(f"Error: {e}")
-    raise e
-
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': e})
+        }
 
 
 def convertingKeywordsSetArrayToObject(program_category):
