@@ -479,10 +479,15 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
 
     AWS_S3_BUCKET_NAME = os.environ.get("AWS_S3_BUCKET_NAME")
 
-    s3 = boto3.resource('s3')
-    transcript_path = studentId + '/analysed_transcript_' + student_name + '.xlsx'
-    s3.Bucket(AWS_S3_BUCKET_NAME).put_object(Key=transcript_path, Body=data)
-    sys.exit(0)
+    try:
+        s3 = boto3.resource('s3')
+        transcript_path = studentId + '/analysed_transcript_' + student_name + '.xlsx'
+        s3.Bucket(AWS_S3_BUCKET_NAME).put_object(Key=transcript_path, Body=data)
+        # Your logic
+    except Exception as e:
+        print(f"Error: {e}")
+    raise e
+
 
 
 def convertingKeywordsSetArrayToObject(program_category):

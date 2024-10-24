@@ -78,7 +78,7 @@ export class LambdaStack extends cdk.Stack {
                         ]
                     }
                 }), // Use the zip artifact from CodeBuild
-                memorySize: 256,
+                memorySize: 512,
                 handler: "lambda_function.lambda_function",
                 timeout: cdk.Duration.seconds(300), // Set timeout here (up to 300 seconds)
                 // Adding environment variable for the S3 bucket name
