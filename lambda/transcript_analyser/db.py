@@ -2,6 +2,7 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 from pymongo import MongoClient
+from bson import ObjectId
 
 from globals import programs_mock
 
@@ -72,6 +73,55 @@ def get_database():
     return db
 
 
+def get_requirements_collection(requirement_ids_list=None):
+    # Get the database connection
+    database = get_database()
+
+    # Use the database connection to perform operations
+    collection = database['programrequirements']
+
+    # Convert string IDs to ObjectId, skipping invalid ones
+    if requirement_ids_list:
+        try:
+            requirement_ids_list = [ObjectId(id) for id in requirement_ids_list]
+        except Exception as e:
+            print(f"Error converting requirement_ids_list to ObjectId: {e}")
+            requirement_ids_list = []
+
+    # Build the query based on the provided requirement_ids_list
+    query = {'_id': {'$in': requirement_ids_list}} if requirement_ids_list else {}
+
+    # Fetch documents based on the query
+    documents = list(collection.find(query))
+
+    return documents
+
+
+def get_all_courses_db_collection(requirement_ids_list=None):
+    # Get the database connection
+    database = get_database()
+
+    # Use the database connection to perform operations
+    collection = database['allcourses']
+
+    # Convert string IDs to ObjectId, skipping invalid ones
+    if requirement_ids_list:
+        try:
+            requirement_ids_list = [ObjectId(id)
+                                    for id in requirement_ids_list]
+        except Exception as e:
+            print(f"Error converting requirement_ids_list to ObjectId: {e}")
+            requirement_ids_list = []
+
+    # Build the query based on the provided requirement_ids_list
+    query = {'_id': {'$in': requirement_ids_list}
+             } if requirement_ids_list else {}
+
+    # Fetch documents based on the query
+    documents = list(collection.find(query))
+
+    return documents
+
 def get_keywords_collection():
     # Get the database connection
     database = get_database()
@@ -107,7 +157,7 @@ def get_programs_analysis_collection():
     return documents
 
 
-def get_programs_analysis_collection_mock():
+def get_programs_analysis_collection_mock(requirement_ids_arr):
     # # Get the database connection
     # database = get_database()
 
@@ -116,6 +166,7 @@ def get_programs_analysis_collection_mock():
 
     # Example: Fetch all documents from the collection
     documents = programs_mock
+    # documents = get_requirements_collection(requirement_ids_arr)
 
     return documents
 

@@ -80,7 +80,8 @@ def post_analyze_courses(event):
                        body['student_id'],
                        body['student_name'],
                        body['language'],
-                       body['courses_taiger_guided'])
+                       body['courses_taiger_guided'],
+                       body['requirement_ids'])
 
     return {
         'statusCode': 200,

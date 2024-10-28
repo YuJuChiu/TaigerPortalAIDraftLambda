@@ -370,7 +370,7 @@ def WriteToExcel(writer, program_name, program_category, baseCategoryToProgramMa
     print("Save to " + program_name)
 
 
-def Classifier(courses_arr, courses_db, basic_classification_en, basic_classification_zh, column_len_array, studentId, student_name, analysis_language):
+def Classifier(courses_arr, courses_db, basic_classification_en, basic_classification_zh, column_len_array, studentId, student_name, analysis_language, requirement_ids_arr=[]):
     df_transcript = pd.DataFrame.from_dict(courses_arr)
     # TODO: move the checking mechanism to util.py!
     # Verify the format of transcript_course_list.xlsx
@@ -467,7 +467,9 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
                 # Modify to column width for "Required_ECTS"
                 column_len_array.append(6)
 
-            programs = get_programs_analysis_collection_mock()
+            programs = get_programs_analysis_collection_mock(
+                requirement_ids_arr)
+            print('programs', programs)
 
             for idx, program in enumerate(programs):
                 createSheet(

@@ -14,4 +14,4 @@ def EE_sorter(course_arr, studentId, student_name, analysis_language):
     basic_classification_zh = convert_courses(processed_data, 'zh')
 
     Classifier(course_arr, ee_course_db,
-               basic_classification_en, basic_classification_zh, column_len_array, studentId, student_name, analysis_language)
+               basic_classification_en, basic_classification_zh, column_len_array, studentId, student_name, analysis_language, [])
