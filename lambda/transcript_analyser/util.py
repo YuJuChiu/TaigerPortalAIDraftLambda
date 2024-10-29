@@ -29,10 +29,10 @@ def isfloat(value):
         return False
 
 
-def ProgramCategoryInit(program_category):
+def ProgramCategoryInit(program_categories):
     df_PROG_SPEC_CATES = []
     df_PROG_SPEC_CATES_COURSES_SUGGESTION = []
-    for idx, cat in enumerate(program_category):
+    for idx, cat in enumerate(program_categories):
         PROG_SPEC_CAT = {cat['program_category']: [],
                          'credits': [], 'grades': [], 'requiredECTS': cat['requiredECTS']}
         PROG_SPEC_CATES_COURSES_SUGGESTION = {cat['program_category']: [],
@@ -540,11 +540,11 @@ def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_co
     #####################################################################
 
     # This fixed to program course category.
-    program_category = program['program_category']
+    program_categories = program['program_categories']
 
     # all keywords that the program has
     all_keywords = [
-        keyword for program in program_category for keyword in program['keywordSets']]
+        keyword for program in program_categories for keyword in program['keywordSets']]
 
     # Main array
     transcript_sorted_group_list = list(transcript_sorted_group_map)
@@ -553,18 +553,18 @@ def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_co
     transcript_sorted_group_list_others = list(set(transcript_sorted_group_list) -
                                                set(all_keywords))
 
-    program_category.append({
+    program_categories.append({
         'program_category': 'Others', 'requiredECTS': 0,
         "keywordSets": transcript_sorted_group_list_others}  # 其他
     )
 
     # Iterate over each program category
     baseCategoryToProgramMapping = convertingKeywordsSetArrayToObject(
-        program_category)
+        program_categories)
 
     #####################################################################
     ####################### End #########################################
     #####################################################################
 
-    WriteToExcel(writer, program_name, program_category, baseCategoryToProgramMapping,
+    WriteToExcel(writer, program_name, program_categories, baseCategoryToProgramMapping,
                  transcript_sorted_group_map, df_transcript_array_temp, df_category_courses_sugesstion_data_temp, column_len_array)

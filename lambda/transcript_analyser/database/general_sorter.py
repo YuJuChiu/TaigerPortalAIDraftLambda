@@ -13,6 +13,8 @@ def general_sorter_function(course_arr, studentId, student_name, analysis_langua
     basic_classification_en = convert_courses(processed_data, 'en')
     basic_classification_zh = convert_courses(processed_data, 'zh')
     all_course_db = get_all_courses_db_collection()
+    print('basic_classification_en: ', basic_classification_en)
+    print('basic_classification_zh: ', basic_classification_zh)
     print('all_course_db: ', all_course_db)
 
     Classifier(course_arr, all_course_db,
