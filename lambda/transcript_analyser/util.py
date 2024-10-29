@@ -526,12 +526,12 @@ def convertingKeywordsSetArrayToObject(program_categories):
 def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_courses_sugesstion_data, writer, program):
     # TODO: schema not matched to db.
     the_program = program['programId'][0]
-    program_name = ', '.join(
+    program_name = ' '.join(
         [the_program['school'], the_program['program_name'], the_program['degree']])
 
     # Limit to 30 characters as limitation of sheet name
     if len(program_name) > 30:
-        program_name = program_name[:30] + '...'  # Add ellipsis if truncated
+        program_name = program_name[:27] + '...'  # Add ellipsis if truncated
     print("Create sheet for", program_name)
     df_transcript_array_temp = []
     df_category_courses_sugesstion_data_temp = []
