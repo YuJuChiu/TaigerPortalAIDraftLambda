@@ -109,16 +109,22 @@ def get_requirements_collection(requirement_ids_list=None):
             '$project': {
                 # Include specific fields from 'programrequirements' and 'programId'
                 **{field: 1 for field in collection.find_one({}).keys()},
-                'programId': 1,
-                'programId.school': 1,
-                'programId.program_name': 1,
-                'programId.degree': 1
+                'programId': {
+                    '$map': {
+                        'input': '$programId',
+                        'as': 'program',
+                        'in': {
+                            '_id': '$$program._id',  # Include the program ID
+                            'school': '$$program.school',
+                            'program_name': '$$program.program_name',
+                            'degree': '$$program.degree'
+                        }
+                    }
+                }
             }
         }
     ]
-    # Build the query based on the provided requirement_ids_list
-    # query = {'_id': {'$in': requirement_ids_list}
-    #          } if requirement_ids_list else {}
+
 
     # Fetch documents based on the query
     documents = list(collection.aggregate(pipeline))
