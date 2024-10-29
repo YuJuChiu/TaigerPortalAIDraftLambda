@@ -210,20 +210,20 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
     for idx, subj in enumerate(df_transcript[column_name_en_zh]):
         if subj == '-':
             continue
-        for idx2, (cat, val) in enumerate(transcript_sorted_group_map):
+        for idx2, cat in enumerate(transcript_sorted_group_map):
             # Put the rest of courses to Others
             if (idx2 == len(transcript_sorted_group_map) - 1):
                 temp_string = df_transcript['grades'][idx]
                 temp0 = 0
                 if temp_string is None:
-                    temp0 = {cat: cat, val['categoryName']: subj, 'credits': df_transcript['credits'][idx],
+                    temp0 = {cat: cat, cat['categoryName']: subj, 'credits': df_transcript['credits'][idx],
                              'grades': df_transcript['grades'][idx]}
                 else:
                     if isfloat(temp_string):
-                        temp0 = {cat: cat, val['categoryName']: subj, 'credits': df_transcript['credits'][idx],
+                        temp0 = {cat: cat, cat['categoryName']: subj, 'credits': df_transcript['credits'][idx],
                                  'grades': float(df_transcript['grades'][idx])}
                     else:
-                        temp0 = {cat: cat, val['categoryName']: subj, 'credits': df_transcript['credits'][idx],
+                        temp0 = {cat: cat, cat['categoryName']: subj, 'credits': df_transcript['credits'][idx],
                                  'grades': df_transcript['grades'][idx]}
 
                 df_temp0 = pd.DataFrame(data=temp0, index=[0])
@@ -233,11 +233,11 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
                 continue
 
             # filter subject by keywords. and exclude subject by anti_keywords
-            if any(keywords in subj for keywords in transcript_sorted_group_map[val['arr']][KEY_WORDS] if not any(anti_keywords in subj for anti_keywords in transcript_sorted_group_map[val['arr']][ANTI_KEY_WORDS])):
+            if any(keywords in subj for keywords in transcript_sorted_group_map[cat['arr']][KEY_WORDS] if not any(anti_keywords in subj for anti_keywords in transcript_sorted_group_map[cat['arr']][ANTI_KEY_WORDS])):
                 temp_string = df_transcript['grades'][idx]
                 temp = 0
                 if temp_string is None:
-                    temp = {cat: cat, val['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
+                    temp = {cat: cat, cat['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
                             'grades': df_transcript['grades'][idx]}
                 else:
                     # failed subject not count
@@ -245,10 +245,10 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
                             or "Fail" in str(temp_string) or "W" in str(temp_string) or "F" in str(temp_string) or "fail" in str(temp_string) or "退選" in str(temp_string) or "withdraw" in str(temp_string)):
                         continue
                     if isfloat(temp_string):
-                        temp = {cat: cat, val['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
+                        temp = {cat: cat, cat['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
                                 'grades': float(df_transcript['grades'][idx])}
                     else:
-                        temp = {cat: cat, val['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
+                        temp = {cat: cat, cat['categoryName']: subj, 'credits': float(df_transcript['credits'][idx]),
                                 'grades': df_transcript['grades'][idx]}
                 df_temp = pd.DataFrame(data=temp, index=[0])
                 if not df_temp.empty:
@@ -262,7 +262,7 @@ def DatabaseCourseSorting(df_database, df_category_courses_sugesstion_data, tran
     for idx, subj in enumerate(df_database[column_name_en_zh]):
         if subj == '-':
             continue
-        for idx2, (cat, val) in enumerate(transcript_sorted_group_map):
+        for idx2, cat in enumerate(transcript_sorted_group_map):
             # Put the rest of courses to Others
             if (idx2 == len(transcript_sorted_group_map) - 1):
                 temp = {'建議修課': subj}
@@ -272,7 +272,7 @@ def DatabaseCourseSorting(df_database, df_category_courses_sugesstion_data, tran
                 continue
 
             # filter database by keywords. and exclude subject by anti_keywords
-            if any(keywords in subj for keywords in transcript_sorted_group_map[val['arr']][KEY_WORDS] if not any(anti_keywords in subj for anti_keywords in transcript_sorted_group_map[val['arr']][ANTI_KEY_WORDS])):
+            if any(keywords in subj for keywords in transcript_sorted_group_map[cat['arr']][KEY_WORDS] if not any(anti_keywords in subj for anti_keywords in transcript_sorted_group_map[cat['arr']][ANTI_KEY_WORDS])):
                 temp = {'建議修課': subj}
                 df_temp = pd.DataFrame(data=temp, index=[0])
                 df_category_courses_sugesstion_data[idx2] = pd.concat(
@@ -380,8 +380,9 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
     df_category_data = []
     category_courses_sugesstion_data = []
     df_category_courses_sugesstion_data = []
-    for idx, (cat, val) in enumerate(transcript_sorted_group_map):
-        category_data = {cat: [], val['categoryName']                         : [], 'credits': [], 'grades': []}
+    for idx, cat in enumerate(transcript_sorted_group_map):
+        category_data = {cat: [], cat['categoryName']
+            : [], 'credits': [], 'grades': []}
         df_category_data.append(pd.DataFrame(data=category_data))
         df_category_courses_sugesstion_data.append(
             pd.DataFrame(data=category_courses_sugesstion_data, columns=['建議修課']))
