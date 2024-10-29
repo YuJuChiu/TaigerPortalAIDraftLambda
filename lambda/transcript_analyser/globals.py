@@ -5,279 +5,279 @@ column_len_array = []
 programs_mock = [
     {
         "program_name": "TUM_EI",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Mathematics',
-                'Required_ECTS': 28,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Mathematics',
+                'requiredECTS': 28,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},  # TODO: it is object
             {
-                'Program_Category': 'Physics',
-                'Required_ECTS': 10,
-                "Keywords_Group": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
+                'program_category': 'Physics',
+                'requiredECTS': 10,
+                "keywordSets": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
             {
-                'Program_Category': 'Programming and Computer science',
-                'Required_ECTS': 12,
-                "Keywords_Group": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
+                'program_category': 'Programming and Computer science',
+                'requiredECTS': 12,
+                "keywordSets": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
             {
-                'Program_Category': 'System_Theory',
-                'Required_ECTS': 8,
-                "Keywords_Group": ['CONTROL_THEORY']},
+                'program_category': 'System_Theory',
+                'requiredECTS': 8,
+                "keywordSets": ['CONTROL_THEORY']},
             {
-                'Program_Category': 'Electronics and Circuits Module',
-                'Required_ECTS': 34,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Electronics and Circuits Module',
+                'requiredECTS': 34,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Theoretical_Module_EECS',
-                'Required_ECTS': 8,
-                "Keywords_Group": ['EE_HF_RF_THEO_INFO']},
+                'program_category': 'Theoretical_Module_EECS',
+                'requiredECTS': 8,
+                "keywordSets": ['EE_HF_RF_THEO_INFO']},
             {
-                'Program_Category': 'Application_Module_EECS',
-                'Required_ECTS': 20,
-                "Keywords_Group": ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
+                'program_category': 'Application_Module_EECS',
+                'requiredECTS': 20,
+                "keywordSets": ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
         ]
     }, {
         "program_name": "RWTH_EI",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Mathematics',
-                'Required_ECTS': 28,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Mathematics',
+                'requiredECTS': 28,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Physics',
-                'Required_ECTS': 10,
-                "Keywords_Group": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
+                'program_category': 'Physics',
+                'requiredECTS': 10,
+                "keywordSets": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
             {
-                'Program_Category': 'Programming and Computer science',
-                'Required_ECTS': 12,
-                "Keywords_Group": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
+                'program_category': 'Programming and Computer science',
+                'requiredECTS': 12,
+                "keywordSets": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
             {
-                'Program_Category': 'System_Theory',
-                'Required_ECTS': 8,
-                "Keywords_Group": ['CONTROL_THEORY']},
+                'program_category': 'System_Theory',
+                'requiredECTS': 8,
+                "keywordSets": ['CONTROL_THEORY']},
             {
-                'Program_Category': 'Electronics and Circuits Module',
-                'Required_ECTS': 34,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Electronics and Circuits Module',
+                'requiredECTS': 34,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Theoretical_Module_EECS',
-                'Required_ECTS': 8,
-                "Keywords_Group": ['EE_HF_RF_THEO_INFO']},
+                'program_category': 'Theoretical_Module_EECS',
+                'requiredECTS': 8,
+                "keywordSets": ['EE_HF_RF_THEO_INFO']},
             {
-                'Program_Category': 'Application_Module_EECS',
-                'Required_ECTS': 20,
-                "Keywords_Group": ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
+                'program_category': 'Application_Module_EECS',
+                'requiredECTS': 20,
+                "keywordSets": ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
         ]
     }, {
         "program_name": "STUTTGART_EI",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Mathematics',
-                'Required_ECTS': 24,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Mathematics',
+                'requiredECTS': 24,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Physics Experiment',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['GENERAL_PHYSICS', 'PHYSICS_EXP']},
+                'program_category': 'Physics Experiment',
+                'requiredECTS': 6,
+                "keywordSets": ['GENERAL_PHYSICS', 'PHYSICS_EXP']},
             {
-                'Program_Category': 'Microelectronics',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS']},
+                'program_category': 'Microelectronics',
+                'requiredECTS': 9,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS']},
             {
-                'Program_Category': 'Intro. Electrical Engineering and project',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['ELECTRONICS_EXPERIMENT']},
+                'program_category': 'Intro. Electrical Engineering and project',
+                'requiredECTS': 9,
+                "keywordSets": ['ELECTRONICS_EXPERIMENT']},
             {
-                'Program_Category': 'Intro. Programming and project',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['PROGRAMMING_LANGUAGE']},
+                'program_category': 'Intro. Programming and project',
+                'requiredECTS': 6,
+                "keywordSets": ['PROGRAMMING_LANGUAGE']},
             {
-                'Program_Category': 'Intro. Software System',
-                'Required_ECTS': 3,
-                "Keywords_Group": ['SOFTWARE_ENGINEERING']},
+                'program_category': 'Intro. Software System',
+                'requiredECTS': 3,
+                "keywordSets": ['SOFTWARE_ENGINEERING']},
             {
-                'Program_Category': 'Energy Technique',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['POWER_ELECTRONICS']},
+                'program_category': 'Energy Technique',
+                'requiredECTS': 9,
+                "keywordSets": ['POWER_ELECTRONICS']},
             {
-                'Program_Category': 'Circuits Technology',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Circuits Technology',
+                'requiredECTS': 9,
+                "keywordSets": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Electromagnetics',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['ELECTRO_MAGNET', 'EE_HF_RF_THEO_INFO']},
+                'program_category': 'Electromagnetics',
+                'requiredECTS': 9,
+                "keywordSets": ['ELECTRO_MAGNET', 'EE_HF_RF_THEO_INFO']},
             {
-                'Program_Category': 'Communication Engineering',
-                'Required_ECTS': 9,
-                "Keywords_Group": ['COMMUNICATION_ENGINEERING']},
+                'program_category': 'Communication Engineering',
+                'requiredECTS': 9,
+                "keywordSets": ['COMMUNICATION_ENGINEERING']},
             {
-                'Program_Category': 'Intro. Information processing',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['EE_INTRO_COMPUTER_SCIENCE']},
+                'program_category': 'Intro. Information processing',
+                'requiredECTS': 6,
+                "keywordSets": ['EE_INTRO_COMPUTER_SCIENCE']},
             {
-                'Program_Category': 'Signals and Systems',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['SIGNAL_SYSTEM']},
+                'program_category': 'Signals and Systems',
+                'requiredECTS': 6,
+                "keywordSets": ['SIGNAL_SYSTEM']},
             {
-                'Program_Category': 'Advanced Modules',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['CONTROL_THEORY', 'SEMICONDUCTOR', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
+                'program_category': 'Advanced Modules',
+                'requiredECTS': 6,
+                "keywordSets": ['CONTROL_THEORY', 'SEMICONDUCTOR', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}
         ]
     }, {
         "program_name": "TUM_MSCE",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 30,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Fundamental Electrical Engineering',
-                'Required_ECTS': 66,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Fundamental Electrical Engineering',
+                'requiredECTS': 66,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Fundamental Communication',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['COMMUNICATION_ENGINEERING', 'EE_HF_RF_THEO_INFO', 'EE_ADVANCED_ELECTRO', 'COMPUTER_NETWORK']}
+                'program_category': 'Fundamental Communication',
+                'requiredECTS': 30,
+                "keywordSets": ['COMMUNICATION_ENGINEERING', 'EE_HF_RF_THEO_INFO', 'EE_ADVANCED_ELECTRO', 'COMPUTER_NETWORK']}
         ]
     }, {
         "program_name": "TUM_MSPE",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 30,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Fundamental Electrical Engineering',
-                'Required_ECTS': 45,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Fundamental Electrical Engineering',
+                'requiredECTS': 45,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Fundamental Mechanics',
-                'Required_ECTS': 45,
-                "Keywords_Group": ['EE_MACHINE']}
+                'program_category': 'Fundamental Mechanics',
+                'requiredECTS': 45,
+                "keywordSets": ['EE_MACHINE']}
         ]
     }, {
         "program_name": "TUM_MSNE",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 32,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 32,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Natural Science (Physics, Biochem., neuroscience',
-                'Required_ECTS': 45,
-                "Keywords_Group": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
+                'program_category': 'Natural Science (Physics, Biochem., neuroscience',
+                'requiredECTS': 45,
+                "keywordSets": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
             {
-                'Program_Category': 'Bio and medical engineering',
-                'Required_ECTS': 40,
-                "Keywords_Group": []}
+                'program_category': 'Bio and medical engineering',
+                'requiredECTS': 40,
+                "keywordSets": []}
         ]
     }, {
         "program_name": "TUHH_MICROELECTRONICS",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Mathematics',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Mathematics',
+                'requiredECTS': 30,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Computer Science',
-                'Required_ECTS': 18,
-                "Keywords_Group": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
+                'program_category': 'Computer Science',
+                'requiredECTS': 18,
+                "keywordSets": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
             {
-                'Program_Category': 'Control Theory',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['CONTROL_THEORY']},
+                'program_category': 'Control Theory',
+                'requiredECTS': 6,
+                "keywordSets": ['CONTROL_THEORY']},
             {
-                'Program_Category': 'Physics',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
+                'program_category': 'Physics',
+                'requiredECTS': 6,
+                "keywordSets": ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']},
             {
-                'Program_Category': 'Fundamental Electrical Engineering',
-                'Required_ECTS': 12,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
+                'program_category': 'Fundamental Electrical Engineering',
+                'requiredECTS': 12,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
             {
-                'Program_Category': 'Materials in Electrical Engineering',
-                'Required_ECTS': 3,
-                "Keywords_Group": ['ELECTRICAL_MATERIALS']},
+                'program_category': 'Materials in Electrical Engineering',
+                'requiredECTS': 3,
+                "keywordSets": ['ELECTRICAL_MATERIALS']},
             {
-                'Program_Category': 'Measurements: Methods and data processing',
-                'Required_ECTS': 3,
-                "Keywords_Group": ['ELECTRONICS_EXPERIMENT']},
+                'program_category': 'Measurements: Methods and data processing',
+                'requiredECTS': 3,
+                "keywordSets": ['ELECTRONICS_EXPERIMENT']},
             {
-                'Program_Category': 'Circuit theory',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Circuit theory',
+                'requiredECTS': 6,
+                "keywordSets": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN']},
             {
-                'Program_Category': 'Transmission Line',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['EE_ADVANCED_ELECTRO']},
+                'program_category': 'Transmission Line',
+                'requiredECTS': 6,
+                "keywordSets": ['EE_ADVANCED_ELECTRO']},
             {
-                'Program_Category': 'Signals and systems',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['SIGNAL_SYSTEM']},
+                'program_category': 'Signals and systems',
+                'requiredECTS': 6,
+                "keywordSets": ['SIGNAL_SYSTEM']},
             {
-                'Program_Category': 'Theoretical Electrical Engineering',
-                'Required_ECTS': 12,
-                "Keywords_Group": ['ELECTRO_MAGNET']},
+                'program_category': 'Theoretical Electrical Engineering',
+                'requiredECTS': 12,
+                "keywordSets": ['ELECTRO_MAGNET']},
             {
-                'Program_Category': 'Semiconductor and electronics devices',
-                'Required_ECTS': 6,
-                "Keywords_Group": ['SEMICONDUCTOR']},
+                'program_category': 'Semiconductor and electronics devices',
+                'requiredECTS': 6,
+                "keywordSets": ['SEMICONDUCTOR']},
         ]
     }, {
         "program_name": "FAU_INFO_COMM_TECH",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 30,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Computer Science',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
+                'program_category': 'Computer Science',
+                'requiredECTS': 30,
+                "keywordSets": ['FUNDAMENTAL_COMPUTER_SCIENCE', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']},
             {
-                'Program_Category': 'Communications Engineering',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['COMMUNICATION_ENGINEERING', 'SIGNAL_SYSTEM', 'EE_HF_RF_THEO_INFO', 'EE_ADVANCED_ELECTRO']},
+                'program_category': 'Communications Engineering',
+                'requiredECTS': 30,
+                "keywordSets": ['COMMUNICATION_ENGINEERING', 'SIGNAL_SYSTEM', 'EE_HF_RF_THEO_INFO', 'EE_ADVANCED_ELECTRO']},
             {
-                'Program_Category': 'Electrical Engineering',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
+                'program_category': 'Electrical Engineering',
+                'requiredECTS': 30,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR', 'ELECTRO_CIRCUIT_DESIGN']},
         ]
     }, {
         "program_name": "TUM_ASIA_IC_DESIGN",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 24,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 24,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Fundamental Electrical Engineering',
-                'Required_ECTS': 66,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
+                'program_category': 'Fundamental Electrical Engineering',
+                'requiredECTS': 66,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
             {
-                'Program_Category': 'Communications Engineering',
-                'Required_ECTS': 30,
-                "Keywords_Group": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN', 'COMPUTER_NETWORK']},
+                'program_category': 'Communications Engineering',
+                'requiredECTS': 30,
+                "keywordSets": ['ELECTRO_CIRCUIT', 'ELECTRO_CIRCUIT_DESIGN', 'COMPUTER_NETWORK']},
         ]
     }, {
         "program_name": "KIT_EI",
-        "program_category": [
+        "program_categories": [
             {
-                'Program_Category': 'Higher Mathematics',
-                'Required_ECTS': 42,
-                "Keywords_Group": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
+                'program_category': 'Higher Mathematics',
+                'requiredECTS': 42,
+                "keywordSets": ['CALCULUS', 'ME_MATH', 'MATH_PROB', 'MATH_LINEAR_ALGEBRA', 'DIFF_EQUATION', 'MATH_DISCRETE', 'MATH_NUM_METHOD']},
             {
-                'Program_Category': 'Fundamental Electrical Engineering',
-                'Required_ECTS': 28,
-                "Keywords_Group": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
+                'program_category': 'Fundamental Electrical Engineering',
+                'requiredECTS': 28,
+                "keywordSets": ['FUNDAMENTAL_ELECTRICAL_ENGINEERING', 'ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_MAGNET', 'POWER_ELECTRONICS', 'SEMICONDUCTOR']},
             {
-                'Program_Category': 'System Engineering',
-                'Required_ECTS': 14,
-                "Keywords_Group": ['CONTROL_THEORY', 'SIGNAL_SYSTEM']},
+                'program_category': 'System Engineering',
+                'requiredECTS': 14,
+                "keywordSets": ['CONTROL_THEORY', 'SIGNAL_SYSTEM']},
             {
-                'Program_Category': 'Information technology',
-                'Required_ECTS': 19,
-                "Keywords_Group": ['EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'COMMUNICATION_ENGINEERING'],
+                'program_category': 'Information technology',
+                'requiredECTS': 19,
+                "keywordSets": ['EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'COMMUNICATION_ENGINEERING'],
                 "fpso": "https://www.etit.kit.edu/rd_download/MHB/MHB_BSc23_ETIT_WS23-82-048-H-2023_v1_2023-10-20_de.pdf"},
 
         ]

@@ -33,9 +33,9 @@ def ProgramCategoryInit(program_category):
     df_PROG_SPEC_CATES = []
     df_PROG_SPEC_CATES_COURSES_SUGGESTION = []
     for idx, cat in enumerate(program_category):
-        PROG_SPEC_CAT = {cat['Program_Category']: [],
-                         'credits': [], 'grades': [], 'Required_ECTS': cat['Required_ECTS']}
-        PROG_SPEC_CATES_COURSES_SUGGESTION = {cat['Program_Category']: [],
+        PROG_SPEC_CAT = {cat['program_category']: [],
+                         'credits': [], 'grades': [], 'requiredECTS': cat['requiredECTS']}
+        PROG_SPEC_CATES_COURSES_SUGGESTION = {cat['program_category']: [],
                                               }
         df_PROG_SPEC_CATES.append(pd.DataFrame(data=PROG_SPEC_CAT))
         df_PROG_SPEC_CATES_COURSES_SUGGESTION.append(
@@ -166,7 +166,7 @@ def Naming_Convention_EN(df_course):
 def CoursesToProgramCategoryMapping(df_PROG_SPEC_CATES, program_category_map, transcript_sorted_group_list, df_transcript_array_temp, isSuggestionCourse):
     for idx, trans_cat in enumerate(df_transcript_array_temp):
         # append sorted courses to program's category
-        categ = program_category_map[idx]['Program_Category']
+        categ = program_category_map[idx]['program_category']
         trans_cat.rename(
             columns={transcript_sorted_group_list[idx]: categ}, inplace=True)
         # find the idx corresponding to program's category
@@ -189,7 +189,7 @@ def CoursesToProgramCategoryMappingNew(df_PROG_SPEC_CATES, program_category, bas
 
     # ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS',...]
     # print(transcript_sorted_group_list)
-    # [{'Program_Category': 'Mathematics', 'Required_ECTS': 28, 'Keywords_Group': ['CALCULUS', 'ME_MATH']}, {'Program_Category': 'Physics', 'Required_ECTS': 10, 'Keywords_Group': ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']}, {'Program_Category': 'Programming and Computer science', 'Required_ECTS': 12, 'Keywords_Group': ['EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']}, {'Program_Category': 'System_Theory', 'Required_ECTS': 8, 'Keywords_Group': ['CONTROL_THEORY']}, {'Program_Category': 'Electronics and Circuits Module', 'Required_ECTS': 34, 'Keywords_Group': ['ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET']}, {'Program_Category': 'Theoretical_Module_EECS', 'Required_ECTS': 8, 'Keywords_Group': ['EE_HF_RF_THEO_INFO']}, {'Program_Category': 'Application_Module_EECS', 'Required_ECTS': 20, 'Keywords_Group': ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}, {'Program_Category': 'Others', 'Required_ECTS': 0, 'Keywords_Group': []}]
+    # [{'program_category': 'Mathematics', 'requiredECTS': 28, 'keywordSets': ['CALCULUS', 'ME_MATH']}, {'program_category': 'Physics', 'requiredECTS': 10, 'keywordSets': ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS', 'PHYSICS_EXP']}, {'program_category': 'Programming and Computer science', 'requiredECTS': 12, 'keywordSets': ['EE_INTRO_COMPUTER_SCIENCE', 'PROGRAMMING_LANGUAGE', 'SOFTWARE_ENGINEERING']}, {'program_category': 'System_Theory', 'requiredECTS': 8, 'keywordSets': ['CONTROL_THEORY']}, {'program_category': 'Electronics and Circuits Module', 'requiredECTS': 34, 'keywordSets': ['ELECTRONICS', 'ELECTRONICS_EXPERIMENT', 'ELECTRO_CIRCUIT', 'SIGNAL_SYSTEM', 'ELECTRO_MAGNET']}, {'program_category': 'Theoretical_Module_EECS', 'requiredECTS': 8, 'keywordSets': ['EE_HF_RF_THEO_INFO']}, {'program_category': 'Application_Module_EECS', 'requiredECTS': 20, 'keywordSets': ['POWER_ELECTRONICS', 'COMMUNICATION_ENGINEERING', 'EE_ADVANCED_ELECTRO', 'EE_APPLICATION_ORIENTED']}, {'program_category': 'Others', 'requiredECTS': 0, 'keywordSets': []}]
     # print(program_category)
     # df array, Columns: [MECHANIK, credits, grades] Index: [], Empty DataFrame,  || Columns: [建議修課] Index: [], Empty DataFrame
     # print(df_transcript_array_temp)
@@ -315,12 +315,14 @@ def AppendCreditsCount(df_PROG_SPEC_CATES, program_category):
         df_PROG_SPEC_CATES[idx] = pd.concat(
             [df_PROG_SPEC_CATES[idx], df_category_credits_sum])
         category_credits_sum = {trans_cat.columns[0]: "ECTS轉換", 'credits': 1.5 *
-                                credit_sum, 'Required_ECTS': program_category[idx]['Required_ECTS']}
+                                credit_sum, 'requiredECTS': program_category[idx]['requiredECTS']}
         df_category_credits_sum = pd.DataFrame(
             data=category_credits_sum, index=[0])
         df_PROG_SPEC_CATES[idx] = pd.concat(
             [df_PROG_SPEC_CATES[idx], df_category_credits_sum])
     return df_PROG_SPEC_CATES
+
+# TODO: debug baseCategoryToProgramMapping, it keywordSets become object
 
 
 def WriteToExcel(writer, program_name, program_category, baseCategoryToProgramMapping, transcript_sorted_group_map, df_transcript_array_temp, df_category_courses_sugesstion_data_temp, column_len_array):
@@ -464,7 +466,7 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
 
                 # set the column length
                 worksheet.set_column(i, i, column_len_array[i] * 2)
-                # Modify to column width for "Required_ECTS"
+                # Modify to column width for "requiredECTS"
                 column_len_array.append(6)
 
             programs = get_programs_analysis_collection_mock(
@@ -500,28 +502,32 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
         }
 
 
-def convertingKeywordsSetArrayToObject(program_category):
+def convertingKeywordsSetArrayToObject(program_categories):
     # Initialize an empty dictionary to store the results
     baseCategoryToProgramMapping = {}
 
     # Iterate over each program category
-    for program in program_category:
-        category = program['Program_Category']
-        ects = program['Required_ECTS']
+    for program in program_categories:
+        category = program['program_category']
+        ects = program['requiredECTS']
 
-        # Iterate over each keyword in the Keywords_Group
-        for keyword in program['Keywords_Group']:
+        # Iterate over each keyword in the keywordSets
+        for keyword in program['keywordSets']:
             # Add the keyword to the dictionary with its corresponding program category and ECTS
+            print('keyword: ', keyword)
+            #  TODO: check if keyword is id or ObjectId
             baseCategoryToProgramMapping[keyword] = {
                 'program_category': category,
-                'Required_ECTS': ects
+                'requiredECTS': ects
             }
     return baseCategoryToProgramMapping
 
 
 def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_courses_sugesstion_data, writer, program):
-    program_name = program['program_name']
-    print("Create " + program_name + " sheet")
+    # TODO: schema not matched to db.
+    program_name = program[0]['program_name']
+    print("Create sheet for",  program_name[0]
+          ['school'] + program_name[0]['program_name'])
     df_transcript_array_temp = []
     df_category_courses_sugesstion_data_temp = []
     for idx, df in enumerate(df_transcript_array):
@@ -535,8 +541,9 @@ def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_co
     # This fixed to program course category.
     program_category = program['program_category']
 
+    # all keywords that the program has
     all_keywords = [
-        keyword for program in program_category for keyword in program['Keywords_Group']]
+        keyword for program in program_category for keyword in program['keywordSets']]
 
     # Main array
     transcript_sorted_group_list = list(transcript_sorted_group_map)
@@ -546,8 +553,8 @@ def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_co
                                                set(all_keywords))
 
     program_category.append({
-        'Program_Category': 'Others', 'Required_ECTS': 0,
-        "Keywords_Group": transcript_sorted_group_list_others}  # 其他
+        'program_category': 'Others', 'requiredECTS': 0,
+        "keywordSets": transcript_sorted_group_list_others}  # 其他
     )
 
     # Iterate over each program category

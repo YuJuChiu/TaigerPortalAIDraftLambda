@@ -97,25 +97,14 @@ def get_requirements_collection(requirement_ids_list=None):
     return documents
 
 
-def get_all_courses_db_collection(requirement_ids_list=None):
+def get_all_courses_db_collection():
     # Get the database connection
     database = get_database()
 
     # Use the database connection to perform operations
     collection = database['allcourses']
 
-    # Convert string IDs to ObjectId, skipping invalid ones
-    if requirement_ids_list:
-        try:
-            requirement_ids_list = [ObjectId(id)
-                                    for id in requirement_ids_list]
-        except Exception as e:
-            print(f"Error converting requirement_ids_list to ObjectId: {e}")
-            requirement_ids_list = []
-
-    # Build the query based on the provided requirement_ids_list
-    query = {'_id': {'$in': requirement_ids_list}
-             } if requirement_ids_list else {}
+    query = {}
 
     # Fetch documents based on the query
     documents = list(collection.find(query))
@@ -131,10 +120,10 @@ def get_keywords_collection():
 
     # Example: Fetch all documents from the collection
     documents = list(collection.find({}))
-
+    print('keyword collection: ', documents)
     # Preprocess data to convert to desired structure
     processed_data = {
-        item['categoryName']: {
+        item['_id']: {
             'keywords': item['keywords'],
             'antiKeywords': item['antiKeywords']
         }
@@ -165,9 +154,9 @@ def get_programs_analysis_collection_mock(requirement_ids_arr):
     # collection = database['programanalyse']
 
     # Example: Fetch all documents from the collection
-    documents = programs_mock
-    # documents = get_requirements_collection(requirement_ids_arr)
-
+    # documents = programs_mock
+    documents = get_requirements_collection(requirement_ids_arr)
+    print('requiremnts: ', documents)
     return documents
 
 
