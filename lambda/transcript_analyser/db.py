@@ -102,23 +102,17 @@ def get_requirements_collection(requirement_ids_list=None):
                 # Field in 'programrequirements' that references 'programs'
                 'localField': 'programId',
                 'foreignField': '_id',          # Field in 'programs' to match with
-                'as': 'program_details'         # Output array field name for joined data
-            }
-        },
-        {
-            '$unwind': {
-                'path': '$program_details',     # Unwind to get program_details as a single object
-                # Keeps documents even if 'program_details' is empty
-                'preserveNullAndEmptyArrays': True
+                'as': 'programId'               # Output array field name for joined data
             }
         },
         {
             '$project': {
-                # Include specific fields from 'programrequirements' and 'program_details'
+                # Include specific fields from 'programrequirements' and 'programId'
+                **{field: 1 for field in collection.find_one({}).keys()},
                 'programId': 1,
-                'program_details.school': 1,
-                'program_details.program_name': 1,
-                'program_details.degree': 1
+                'programId.school': 1,
+                'programId.program_name': 1,
+                'programId.degree': 1
             }
         }
     ]

@@ -525,9 +525,10 @@ def convertingKeywordsSetArrayToObject(program_categories):
 
 def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_courses_sugesstion_data, writer, program):
     # TODO: schema not matched to db.
-    program_name = program['programId'][0]
-    print("Create sheet for",  program_name
-          ['school'] + program_name['program_name'])
+    the_program = program['programId'][0]
+    program_name = the_program['school'] + \
+        the_program['program_name'] + the_program['degree']
+    print("Create sheet for", program_name)
     df_transcript_array_temp = []
     df_category_courses_sugesstion_data_temp = []
     for idx, df in enumerate(df_transcript_array):
