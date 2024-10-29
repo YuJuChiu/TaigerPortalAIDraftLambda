@@ -83,16 +83,51 @@ def get_requirements_collection(requirement_ids_list=None):
     # Convert string IDs to ObjectId, skipping invalid ones
     if requirement_ids_list:
         try:
-            requirement_ids_list = [ObjectId(id) for id in requirement_ids_list]
+            requirement_ids_list = [ObjectId(id)
+                                    for id in requirement_ids_list]
         except Exception as e:
             print(f"Error converting requirement_ids_list to ObjectId: {e}")
             requirement_ids_list = []
 
+    # Aggregation pipeline to fetch documents and "populate" the programId field
+    pipeline = [
+        {
+            '$match': {
+                '_id': {'$in': [ObjectId(id) for id in requirement_ids_list]}
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'programs',             # Collection to join with
+                # Field in 'programrequirements' that references 'programs'
+                'localField': 'programId',
+                'foreignField': '_id',          # Field in 'programs' to match with
+                'as': 'program_details'         # Output array field name for joined data
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$program_details',     # Unwind to get program_details as a single object
+                # Keeps documents even if 'program_details' is empty
+                'preserveNullAndEmptyArrays': True
+            }
+        },
+        {
+            '$project': {
+                # Include specific fields from 'programrequirements' and 'program_details'
+                'programId': 1,
+                'program_details.school': 1,
+                'program_details.program_name': 1,
+                'program_details.degree': 1
+            }
+        }
+    ]
     # Build the query based on the provided requirement_ids_list
-    query = {'_id': {'$in': requirement_ids_list}} if requirement_ids_list else {}
+    # query = {'_id': {'$in': requirement_ids_list}
+    #          } if requirement_ids_list else {}
 
     # Fetch documents based on the query
-    documents = list(collection.find(query))
+    documents = list(collection.aggregate(pipeline))
 
     return documents
 
@@ -110,6 +145,7 @@ def get_all_courses_db_collection():
     documents = list(collection.find(query))
 
     return documents
+
 
 def get_keywords_collection():
     # Get the database connection

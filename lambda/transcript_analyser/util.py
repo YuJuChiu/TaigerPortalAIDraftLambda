@@ -525,9 +525,9 @@ def convertingKeywordsSetArrayToObject(program_categories):
 
 def createSheet(transcript_sorted_group_map, df_transcript_array, df_category_courses_sugesstion_data, writer, program):
     # TODO: schema not matched to db.
-    program_name = program[0]['program_name']
-    print("Create sheet for",  program_name[0]
-          ['school'] + program_name[0]['program_name'])
+    program_name = program['programId'][0]
+    print("Create sheet for",  program_name
+          ['school'] + program_name['program_name'])
     df_transcript_array_temp = []
     df_category_courses_sugesstion_data_temp = []
     for idx, df in enumerate(df_transcript_array):
