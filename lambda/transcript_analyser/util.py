@@ -163,29 +163,7 @@ def Naming_Convention_EN(df_course):
 
 
 # mapping courses to target programs category
-def CoursesToProgramCategoryMapping(df_PROG_SPEC_CATES, program_category_map, transcript_sorted_group_list, df_transcript_array_temp, isSuggestionCourse):
-    for idx, trans_cat in enumerate(df_transcript_array_temp):
-        # append sorted courses to program's category
-        categ = program_category_map[idx]['program_category']
-        trans_cat.rename(
-            columns={transcript_sorted_group_list[idx]: categ}, inplace=True)
-        # find the idx corresponding to program's category
-        idx_temp = -1
-        for idx2, cat in enumerate(df_PROG_SPEC_CATES):
-            if categ == cat.columns[0]:
-                idx_temp = idx2
-                break
-        # remove the redundant suggestion courses mapping to "Others" because those categories in Others are not advanced courses.
-        if isSuggestionCourse:
-            if idx != len(df_transcript_array_temp) - 1 and idx_temp == len(df_PROG_SPEC_CATES) - 1:
-                continue
-        df_PROG_SPEC_CATES[idx_temp] = pd.concat(
-            [df_PROG_SPEC_CATES[idx_temp], trans_cat])
-    return df_PROG_SPEC_CATES
-
-
-# mapping courses to target programs category
-def CoursesToProgramCategoryMappingNew(df_PROG_SPEC_CATES, program_category, baseCategoryToProgramMapping, transcript_sorted_group_list, df_transcript_array_temp, isSuggestionCourse):
+def CoursesToProgramCategoryMappingNew(df_PROG_SPEC_CATES, baseCategoryToProgramMapping, transcript_sorted_group_list, df_transcript_array_temp, isSuggestionCourse):
 
     # ['GENERAL_PHYSICS', 'EE_ADVANCED_PHYSICS',...]
     # print(transcript_sorted_group_list)
@@ -332,11 +310,11 @@ def WriteToExcel(writer, program_name, program_category, baseCategoryToProgramMa
 
     # Courses: mapping the students' courses to program-specific category
     df_PROG_SPEC_CATES = CoursesToProgramCategoryMappingNew(
-        df_PROG_SPEC_CATES, program_category, baseCategoryToProgramMapping, transcript_sorted_group_list, df_transcript_array_temp, False)
+        df_PROG_SPEC_CATES, baseCategoryToProgramMapping, transcript_sorted_group_list, df_transcript_array_temp, False)
 
     # Suggestion courses: mapping the sugesstion courses to program-specific category
     df_PROG_SPEC_CATES_COURSES_SUGGESTION = CoursesToProgramCategoryMappingNew(
-        df_PROG_SPEC_CATES_COURSES_SUGGESTION, program_category, baseCategoryToProgramMapping, transcript_sorted_group_list, df_category_courses_sugesstion_data_temp, True)
+        df_PROG_SPEC_CATES_COURSES_SUGGESTION, baseCategoryToProgramMapping, transcript_sorted_group_list, df_category_courses_sugesstion_data_temp, True)
 
     # append 總credits for each program category
     df_PROG_SPEC_CATES = AppendCreditsCount(
@@ -405,7 +383,7 @@ def Classifier(courses_arr, courses_db, basic_classification_en, basic_classific
     category_courses_sugesstion_data = []
     df_category_courses_sugesstion_data = []
     for idx, cat in enumerate(transcript_sorted_group_map):
-        category_data = {cat: [], 'credits': [], 'grades': []}
+        category_data = {cat: [], cat['categoryName']: [], 'credits': [], 'grades': []}
         df_category_data.append(pd.DataFrame(data=category_data))
         df_category_courses_sugesstion_data.append(
             pd.DataFrame(data=category_courses_sugesstion_data, columns=['建議修課']))
