@@ -238,14 +238,14 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
                 temp_string = df_transcript['grades'][idx]
                 temp0 = 0
                 if temp_string is None:
-                    temp0 = {cat: subj, 'credits': df_transcript['credits'][idx],
+                    temp0 = {cat: subj['categoryName'], 'credits': df_transcript['credits'][idx],
                              'grades': df_transcript['grades'][idx]}
                 else:
                     if isfloat(temp_string):
-                        temp0 = {cat: subj, 'credits': df_transcript['credits'][idx],
+                        temp0 = {cat: subj['categoryName'], 'credits': df_transcript['credits'][idx],
                                  'grades': float(df_transcript['grades'][idx])}
                     else:
-                        temp0 = {cat: subj, 'credits': df_transcript['credits'][idx],
+                        temp0 = {cat: subj['categoryName'], 'credits': df_transcript['credits'][idx],
                                  'grades': df_transcript['grades'][idx]}
 
                 df_temp0 = pd.DataFrame(data=temp0, index=[0])
@@ -259,7 +259,7 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
                 temp_string = df_transcript['grades'][idx]
                 temp = 0
                 if temp_string is None:
-                    temp = {cat: subj, 'credits': float(df_transcript['credits'][idx]),
+                    temp = {cat: subj['categoryName'], 'credits': float(df_transcript['credits'][idx]),
                             'grades': df_transcript['grades'][idx]}
                 else:
                     # failed subject not count
@@ -267,10 +267,10 @@ def CourseSorting(df_transcript, df_category_data, transcript_sorted_group_map, 
                             or "Fail" in str(temp_string) or "W" in str(temp_string) or "F" in str(temp_string) or "fail" in str(temp_string) or "退選" in str(temp_string) or "withdraw" in str(temp_string)):
                         continue
                     if isfloat(temp_string):
-                        temp = {cat: subj, 'credits': float(df_transcript['credits'][idx]),
+                        temp = {cat: subj['categoryName'], 'credits': float(df_transcript['credits'][idx]),
                                 'grades': float(df_transcript['grades'][idx])}
                     else:
-                        temp = {cat: subj, 'credits': float(df_transcript['credits'][idx]),
+                        temp = {cat: subj['categoryName'], 'credits': float(df_transcript['credits'][idx]),
                                 'grades': df_transcript['grades'][idx]}
                 df_temp = pd.DataFrame(data=temp, index=[0])
                 if not df_temp.empty:

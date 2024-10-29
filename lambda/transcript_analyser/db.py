@@ -160,6 +160,7 @@ def get_keywords_collection():
     # Preprocess data to convert to desired structure
     processed_data = {
         item['_id']: {
+            'categoryName': item['categoryName'],
             'keywords': item['keywords'],
             'antiKeywords': item['antiKeywords']
         }
