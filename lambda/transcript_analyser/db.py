@@ -125,7 +125,6 @@ def get_requirements_collection(requirement_ids_list=None):
         }
     ]
 
-
     # Fetch documents based on the query
     documents = list(collection.aggregate(pipeline))
 
@@ -215,6 +214,7 @@ def convert_courses(course_dict, lang):
     # Loop through each course in the dictionary
     for course_name, course_details in course_dict.items():
         # Extract the relevant details
+        # categoryName = course_details.get('categoryName', '')
         keywords = course_details.get('keywords', {}).get(lang, [])
         anti_keywords = course_details.get('antiKeywords', {}).get(lang, [])
 
