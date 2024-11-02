@@ -154,7 +154,7 @@ def get_keywords_collection():
     collection = database['keywordsets']
 
     # Example: Fetch all documents from the collection
-    documents = list(collection.find({}))
+    documents = list(collection.find({}).sort("categoryName", 1))
     print('keyword collection: ', documents)
     # Preprocess data to convert to desired structure
     processed_data = {

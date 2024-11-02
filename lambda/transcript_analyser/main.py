@@ -1,6 +1,5 @@
 import sys
 import json
-from database.ElectricalEngineering.EE_sorter import EE_sorter
 from database.general_sorter import general_sorter_function
 
 
@@ -22,15 +21,6 @@ def analyze_transcript(str_courses, student_id, student_name, language, str_cour
 
     general_sorter_function(
         course_arr, student_id, student_name, language, requirement_ids_arr)
-    
-    # 
-    # sorter_functions = {
-    #     'ee': EE_sorter,
-    # }
-    # program_code = category
-    # if program_code in sorter_functions:
-    #     sorter_functions[program_code](
-    #         course_arr, student_id, student_name, language)
 
     return {str_courses, student_id, student_name, language, str_courses_taiger_guided}
 
