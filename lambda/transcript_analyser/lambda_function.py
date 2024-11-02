@@ -76,7 +76,6 @@ def post_analyze_courses(event):
     print("Request body:", body)
 
     analyze_transcript(body['courses'],
-                       body['category'],
                        body['student_id'],
                        body['student_name'],
                        body['language'],

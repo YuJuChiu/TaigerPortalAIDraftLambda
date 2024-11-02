@@ -3,7 +3,8 @@ import json
 from database.ElectricalEngineering.EE_sorter import EE_sorter
 from database.general_sorter import general_sorter_function
 
-def analyze_transcript(str_courses, category, student_id, student_name, language, str_courses_taiger_guided, requirement_ids="[]"):
+
+def analyze_transcript(str_courses, student_id, student_name, language, str_courses_taiger_guided, requirement_ids="[]"):
     print("--------------------------")
     print("New Transcript Analyser")
     print("Python version:")
@@ -31,9 +32,9 @@ def analyze_transcript(str_courses, category, student_id, student_name, language
     #     sorter_functions[program_code](
     #         course_arr, student_id, student_name, language)
 
-    return {str_courses, category, student_id, student_name, language, str_courses_taiger_guided}
+    return {str_courses, student_id, student_name, language, str_courses_taiger_guided}
 
 
 if __name__ == "__main__":
     analyze_transcript(sys.argv[1], sys.argv[2], sys.argv[3],
-                       sys.argv[4], sys.argv[5], sys.argv[6])
+                       sys.argv[4], sys.argv[5])
